@@ -1,19 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int SIZE = 10;
+#define SIZE 10
 #define TARGET 19690720
 
 #define HALT 99
 #define ADD 1
 #define MULT 2
-
-struct Op {
-  int code;
-  int a;
-  int b;
-  int addr;
-};
 
 int* ingest(int* size) {
 
@@ -66,8 +59,8 @@ int* copy_arr(int* arr, int* targ, int size) {
 
   return targ;
 }
-int main(int argc, char* argv[]) {
 
+int main(int argc, char* argv[]) {
   int size = 0;
   int* ops = ingest(&size);
   int* tmp_ops = calloc(size, sizeof(int));
@@ -81,7 +74,7 @@ int main(int argc, char* argv[]) {
       copy_arr(ops, tmp_ops, size);
       int ret = run(tmp_ops, size, i, j);
       if (ret == TARGET) {
-        printf("The answer is %d\n", 100 * i + j);
+        printf("The second answer is %d\n", 100 * i + j);
       }
     }
   }
