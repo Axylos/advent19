@@ -19,13 +19,8 @@ int compute_fuel(int mass) {
   return sum;
 }
 
-void test() {
-  assert(0);
-}
-
 int main (int argc, char* argv[]) {
 
-  test();
   char str[50];
   int i;
   int sum_mass = 0;
