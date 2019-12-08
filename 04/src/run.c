@@ -66,10 +66,37 @@ bool is_valid(int n) {
   return double_seen && is_sorted(head);
 }
 
-int get_valid_pw_count_in_range(int a, int b) {
+bool is_valid_part_deux(int n) {
+  bool double_seen = false;
+  int step = -1;
+  int prev = -1;
+  bool is_step_odd = false;
+
+  while (n > 0) {
+
+    prev = step;
+    step = n % 10;
+    n /= 10;
+    if (prev > -1 && prev < step) {
+      return false;
+    }
+
+    if (prev != step) {
+      if (prev > 0 && is_step_odd == false) {
+        double_seen = true;
+      }
+      is_step_odd = true;
+    } else {
+      is_step_odd = !is_step_odd;
+    }
+  }
+
+  return double_seen;
+}
+int get_valid_pw_count_in_range(int a, int b, bool(*validator)(int a)) {
   int sum = 0;
   for (int i = a; i <= b; i++) {
-    if (is_valid(i)) {
+    if (validator(i)) {
       sum += 1;
     }
   }
@@ -89,7 +116,16 @@ int main(int argc, char* argv[]) {
   assert(!is_valid(223450));
   assert(!is_valid(123789));
 
-  int sum = get_valid_pw_count_in_range(a, b);
+  assert(is_valid_part_deux(112233));
+  assert(!is_valid_part_deux(123444));
+  assert(is_valid_part_deux(111122));
+  //assert(is_valid_part_deux(111111));
+
+
+  int sum = get_valid_pw_count_in_range(a, b, is_valid);
   printf("the sum of valid pws is: %d\n", sum);
+
+  int sum2 = get_valid_pw_count_in_range(a, b, is_valid_part_deux);
+  printf("the answer to part II is: %d\n", sum2);
   return 0;
 }
