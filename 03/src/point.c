@@ -4,15 +4,11 @@
 #include <stdio.h>
 
 int hash(struct Point* pt) {
-  return ((pt->x + pt->y) * 31) % H_TABLE_SIZE;
+  return abs(((pt->x + pt->y) * 31) % H_TABLE_SIZE);
 }
 
 struct PointSet* init_pt_set() {
-  struct PointList* table[H_TABLE_SIZE];
-
   struct PointSet* set = malloc(sizeof(struct PointSet));
-  set->h_table = table;
-
   return set;
 }
 
@@ -71,4 +67,23 @@ struct PointList* init_pt_list() {
 
 
   return list;
+}
+
+struct PointSet* find_intersections(struct PointSet* a, struct PointSet* b) {
+  struct PointSet* intersection = init_pt_set();
+  for (int i = 0; i < H_TABLE_SIZE; i++) {
+    if (a->h_table[i] != NULL) {
+      struct PointNode* node = a->h_table[i]->head;
+      while(node != NULL) {
+        struct Point* pt = node->point;
+        if (has_key(b, pt)) {
+          // printf("intersection x: %d y: %d", pt->x, pt->y);
+          set_insert_pt(intersection, pt);
+        }
+        node = node->next;
+      }
+    }
+  }
+  
+  return intersection;
 }

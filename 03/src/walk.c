@@ -42,3 +42,37 @@ struct PointSet* build_seen_pt_set(struct OpList* ops) {
 
   return set;
 }
+
+int find_man_dist_to_origin(struct Point point) {
+  return abs(point.x) + abs(point.y);
+}
+
+int find_least_dist(struct PointList* table[H_TABLE_SIZE]) {
+  int ans = -1;
+  for (int i = 0; i < H_TABLE_SIZE; i++) {
+    if (table[i] != NULL) {
+      struct PointList* list = table[i];
+      struct PointNode* node = list->head;
+      while(node != NULL) {
+        struct Point pt = *(node->point);
+        int dist = find_man_dist_to_origin(pt); 
+        if (ans < 0 || dist < ans) {
+          ans = dist;
+        };
+
+        node = node->next;
+      }
+    }
+  }
+  return ans;
+}
+
+int find_distance_to_closest_intersection(struct OpList* a, struct OpList* b) {
+  struct PointSet* seen_pts = build_seen_pt_set(a);
+  struct PointSet* other_seen_pts = build_seen_pt_set(b);
+
+  struct PointSet* intersections = find_intersections(seen_pts, other_seen_pts);
+  int answer = find_least_dist(intersections->h_table);
+  printf("%d\n", intersections->h_table[0]->head->point->x);
+  return answer;
+}

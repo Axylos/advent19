@@ -21,8 +21,10 @@ struct PointNode {
 };
 
 struct PointSet {
-  struct PointList** h_table; 
+  struct PointList* h_table[H_TABLE_SIZE]; 
 };
+
+struct PointSet* find_intersections(struct PointSet* a, struct PointSet* b);
 
 struct Point* init_pt(int x, int y);
 

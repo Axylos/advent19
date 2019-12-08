@@ -66,9 +66,19 @@ int main(int argc, char* argv[]) {
 
 int main(int argc, char* argv[]) {
   struct OpList* a = parse_line();
-  struct PointSet* set = build_seen_pt_set(a);
-  //struct OpNode* b = parse_line();
+  struct OpList* b = parse_line();
 
-  printf("%d\n", set->h_table[1]->head->point->x);
+  int dist = find_distance_to_closest_intersection(a, b);
+  printf("the answer is: %d\n", dist);
+
+  /*
+  struct PointSet* intersection_points = find_intersections(seen_pts, other_seen_pts);
+  for (int i = 0; i < H_TABLE_SIZE; i++) {
+    if ()intersection_points->h_table[i] != NULL) {
+      printf("%d\n", intersection_points->h_table[i]->head->point->x);
+    }
+  }
+  */
+  //printf("%d\n", set->h_table[1]->head->point->x);
   return 0;
 }
