@@ -70,8 +70,7 @@ bool is_valid_part_deux(int n) {
   bool double_seen = false;
   int step = -1;
   int prev = -1;
-  bool is_step_odd = false;
-
+  int ct = 1;
   while (n > 0) {
 
     prev = step;
@@ -81,14 +80,19 @@ bool is_valid_part_deux(int n) {
       return false;
     }
 
-    if (prev != step) {
-      if (prev > 0 && is_step_odd == false) {
+    if (prev != step ) {
+      if (prev > 0 && ct == 2) {
         double_seen = true;
       }
-      is_step_odd = true;
+
+      ct = 1;
     } else {
-      is_step_odd = !is_step_odd;
+      ct++;
     }
+  }
+
+  if (prev == step && ct == 2) {
+    double_seen = true;
   }
 
   return double_seen;
@@ -119,8 +123,14 @@ int main(int argc, char* argv[]) {
   assert(is_valid_part_deux(112233));
   assert(!is_valid_part_deux(123444));
   assert(is_valid_part_deux(111122));
-  //assert(is_valid_part_deux(111111));
+  assert(is_valid_part_deux(122244));
+  assert(is_valid_part_deux(112222));
+  assert(!is_valid_part_deux(111111));
+  assert(!is_valid_part_deux(011111));
+  assert(!is_valid_part_deux(111112));
 
+  assert(!is_valid_part_deux(223450));
+  assert(!is_valid_part_deux(123789));
 
   int sum = get_valid_pw_count_in_range(a, b, is_valid);
   printf("the sum of valid pws is: %d\n", sum);
