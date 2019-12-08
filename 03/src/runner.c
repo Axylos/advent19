@@ -68,8 +68,15 @@ int main(int argc, char* argv[]) {
   struct OpList* a = parse_line();
   struct OpList* b = parse_line();
 
-  int dist = find_distance_to_closest_intersection(a, b);
-  printf("the answer is: %d\n", dist);
+  struct PointSet* seen_pts = build_seen_pt_set(a);
+  struct PointSet* other_seen_pts = build_seen_pt_set(b);
+
+  struct PointSet* intersections = find_intersections(seen_pts, other_seen_pts);
+
+  int dist = find_distance_to_closest_intersection(intersections);
+  printf("the answer to part I is: %d\n", dist);
+  int steps = find_fewest_steps(intersections);
+  printf("the answer to part II is: %d\n", steps);
 
   /*
   struct PointSet* intersection_points = find_intersections(seen_pts, other_seen_pts);

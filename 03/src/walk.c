@@ -22,12 +22,14 @@ void walk(struct PointSet* set, struct Point* pos, char dir, int dist) {
       break;
   }
 
+  pos->steps += 1;
   set_insert_pt(set, pos);
   walk(set, pos, dir, dist - 1);
 }
 
 struct PointSet* build_seen_pt_set(struct OpList* ops) {
   struct Point pos = {
+    0,
     0,
     0
   };
@@ -67,12 +69,28 @@ int find_least_dist(struct PointList* table[H_TABLE_SIZE]) {
   return ans;
 }
 
-int find_distance_to_closest_intersection(struct OpList* a, struct OpList* b) {
-  struct PointSet* seen_pts = build_seen_pt_set(a);
-  struct PointSet* other_seen_pts = build_seen_pt_set(b);
-
-  struct PointSet* intersections = find_intersections(seen_pts, other_seen_pts);
+int find_distance_to_closest_intersection(struct PointSet* intersections) {
   int answer = find_least_dist(intersections->h_table);
-  printf("%d\n", intersections->h_table[0]->head->point->x);
   return answer;
+}
+
+int find_fewest_steps(struct PointSet* intersections) {
+  int ans = -1;
+  struct PointList** table = intersections->h_table;
+  for (int i = 0; i < H_TABLE_SIZE; i++) {
+    if (table[i] != NULL) {
+      struct PointList* list = table[i];
+      struct PointNode* node = list->head;
+      while(node != NULL) {
+        struct Point pt = *(node->point);
+        if (ans < 0 || pt.steps < ans) {
+          ans = pt.steps;
+          printf("answer: %d\n", ans);
+        };
+
+        node = node->next;
+      }
+    }
+  }
+  return ans;
 }

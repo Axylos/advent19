@@ -21,7 +21,7 @@ void set_insert_pt(struct PointSet* set, struct Point* pt) {
   struct Point* new_pt = malloc(sizeof(struct Point));
   new_pt->x = pt->x;
   new_pt->y = pt->y;
-
+  new_pt->steps = pt->steps;
 
   append_pt(set->h_table[code], new_pt);
 
@@ -29,20 +29,20 @@ void set_insert_pt(struct PointSet* set, struct Point* pt) {
   pt->y = new_pt->y;
 }
 
-bool has_key(struct PointSet* set, struct Point* pt) {
+struct Point* has_key(struct PointSet* set, struct Point* pt) {
   int code = hash(pt);
 
   struct PointList* list = set->h_table[code];
   struct PointNode* head = list->head;
   while(head != NULL) {
     if (cmp(head->point, pt)) {
-      return true;
+      return head->point;
     }
 
     head = head->next;
   }
 
-  return false;
+  return NULL;
 }
 
 void append_pt(struct PointList* list, struct Point* pt) {
@@ -76,9 +76,14 @@ struct PointSet* find_intersections(struct PointSet* a, struct PointSet* b) {
       struct PointNode* node = a->h_table[i]->head;
       while(node != NULL) {
         struct Point* pt = node->point;
-        if (has_key(b, pt)) {
-          // printf("intersection x: %d y: %d", pt->x, pt->y);
-          set_insert_pt(intersection, pt);
+        struct Point* other_pt;
+        if ((other_pt = has_key(b, pt))) {
+          struct Point* intersection_pt = malloc(sizeof(struct Point));
+          intersection_pt->x = pt->x;
+          intersection_pt->y = pt->y;
+          intersection_pt->steps = pt->steps + other_pt->steps;
+
+          set_insert_pt(intersection, intersection_pt);
         }
         node = node->next;
       }

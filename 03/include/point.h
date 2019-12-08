@@ -8,6 +8,7 @@
 struct Point {
   int x;
   int y;
+  int steps;
 };
 
 struct PointList {
@@ -29,7 +30,7 @@ struct PointSet* find_intersections(struct PointSet* a, struct PointSet* b);
 struct Point* init_pt(int x, int y);
 
 struct PointSet* init_pt_set();
-bool has_key(struct PointSet* set, struct Point* pt);
+struct Point* has_key(struct PointSet* set, struct Point* pt);
 void set_insert_pt(struct PointSet* set, struct Point* pt);
 
 void append_pt(struct PointList* list, struct Point* pt);
