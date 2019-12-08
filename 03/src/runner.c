@@ -2,53 +2,11 @@
 #include <stdlib.h>
 #include <circuit.h>
 #include <stdbool.h>
-
-#define SIZE 30
-
-
-
-#define UP 'U'
-#define RIGHT 'R'
-#define DOWN 'D'
-#define LEFT 'L'
-
-struct Op {
-  char dir;
-  int dist;
-};
-
-struct Node {
-  struct Node* next;
-  struct Op* val;
-};
-
-struct Node* h_table[SIZE];
-
-bool cmp(struct Op* a, struct Op* b) {
-  return a->dist == b->dist && a->dir == b->dir;
-}
-
-int hash(struct Op* op) {
-  return op->dist % SIZE; //ha ha
-}
-
-bool has_key(struct Op* op) {
-  int code = hash(op);
-
-  struct Node* head = h_table[code];
-  while(head != NULL) {
-    if (cmp(head->val, op)) {
-      return true;
-    }
-
-    head = head->next;
-  }
-
-  return false;
-}
-
+#include <op.h>
+#include <walk.h>
+/*
 void insert_val(struct Op* op) {
-  int hash_code = hash(op);
+  int hash_code = 1; //hash(op);
   struct Node* node = (struct Node*)malloc(sizeof(struct Node));
   node->val = op;
   node->next = NULL;
@@ -62,37 +20,6 @@ void insert_val(struct Op* op) {
 
     head->next = node;
   }
-}
-
-struct Node* parse_line() {
-  char dir;
-  int dist;
-
-  struct Node* head = NULL;
-
-  char terminal;
-  while(scanf("%c%d%c", &dir, &dist, &terminal)!= EOF) {
-    struct Op* op = (struct Op*)malloc(sizeof(struct Op));
-    op->dir = dir;
-    op->dist = dist;
-
-    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
-    node->val = op;
-    node->next = NULL;
-    if (head == NULL) {
-      head = node;
-    } else {
-     node->next = head; 
-     head = node;
-    }
-    if (terminal != ',') {
-      break;
-    }
-
-    terminal = 'a';
-  }
-
-  return head;
 }
 
 int main(int argc, char* argv[]) {
@@ -109,9 +36,39 @@ int main(int argc, char* argv[]) {
     head = head->next;
   }
 
+  struct Node* intersections;
+
+  head = b;
+
+  while(head != NULL) {
+    if (has_key(head->val)) {
+      struct Node* node = malloc(sizeof(struct Node));
+      node->val = head->val;
+      node->next = NULL;
+      if (intersections == NULL) {
+        intersections = node;
+      } else {
+        node->next = intersections;
+        intersections = node;
+      }
+    }
+
+    head = head->next;
+  }
+
   printf("%d\n", h_table[0]->val->dist);
   printf("%d\n", a->val->dist);
   printf("%d\n", b->val->dist);
   printf("has val: %d", has_key(b->val));
+  return 0;
+}
+*/
+
+int main(int argc, char* argv[]) {
+  struct OpList* a = parse_line();
+  struct PointSet* set = build_seen_pt_set(a);
+  //struct OpNode* b = parse_line();
+
+  printf("%d\n", set->h_table[1]->head->point->x);
   return 0;
 }

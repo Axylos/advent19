@@ -7,16 +7,16 @@ BUILD_DIR=./build
 _DEPS=
 DEPS=$(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ=circuit.o runner.o
+_OBJ=point.o op.o walk.o runner.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)
-	$(CC) -c -g -o $@ $< $(CFLAGS)
+	$(CC) -c -g3 -o $@ $< $(CFLAGS)
 
 all: clean run
 
 build: $(OBJ)
-	$(CC) -g -o $(BUILD_DIR)/run $^ $(CFLAGS)
+	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
 run: build
 	./build/run < input.txt
