@@ -10,11 +10,12 @@ void writer(int val) {
 }
 
 int reader() {
-  return 99;
+  return 1000;
+
 }
 
-int test_simple_prog() {
-  FILE* fp = fopen("test_progs/01.txt", "r");
+int test_prog(char file_name[]) {
+  FILE* fp = fopen(file_name, "r");
   if (!fp) {
     perror("file open failed");
     return EXIT_FAILURE;
@@ -23,30 +24,26 @@ int test_simple_prog() {
   int* list = ingest(&size, fp);
   fclose(fp);
 
-  struct Machine* machine = init_machine(list, reader, writer);
-  run(machine);
-
-  return 0;
-}
-
-int test_other_simple_prog() {
-  FILE* fp = fopen("test_progs/02.txt", "r");
-  if (!fp) {
-    perror("file open failed");
-    return EXIT_FAILURE;
-  }
-  int size;
-  int* list = ingest(&size, fp);
-  fclose(fp);
-
-  struct Machine* machine = init_machine(list, reader, writer);
+  struct Machine* machine = init_machine(list, size, reader, writer);
   run(machine);
 
   return 0;
 }
 
 int main(int argc, char* argv[]) {
-  test_simple_prog();
-  assert(test_other_simple_prog() == 0);
+  //assert(test_prog("test_progs/01.txt") == 0);
+  //assert(test_prog("test_progs/02.txt") == 0);
+  
+  // test if eq 8
+  //assert(test_prog("test_progs/03.txt") == 0);
+  //test_prog("test_progs/05.txt");
+  
+  // test if lt 8
+  //test_prog("test_progs/06.txt");
+  //test_prog("test_progs/04.txt");
+  
+  // test if input is 0 and print 0 if so
+  test_prog("test_progs/07.txt");
+  //test_prog("test_progs/08.txt");
   return 0;
 }

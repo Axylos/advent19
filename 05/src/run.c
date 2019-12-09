@@ -23,7 +23,7 @@ int main(int argc, char* argv[]) {
   int* list = ingest(&size, fp);
   fclose(fp);
 
-  struct Machine* machine = init_machine(list, reader, writer);
+  struct Machine* machine = init_machine(list, size, reader, writer);
   run(machine);
 
   return 0;

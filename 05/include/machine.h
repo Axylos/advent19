@@ -3,23 +3,20 @@
 
 #define OP_LIST_SIZE 50
 
-#include <machine.h>
-
 struct Machine {
   int ip;
   int* regs;
   int(*get_input)();
   void(*put_output)(int val);
+  int reg_size;
 };
 
-struct Machine* init_machine(int* op_list,
+struct Machine* init_machine(int* op_list, int list_size,
     int(*input_fn)(), void(*output_fn)(int val));
 
 int input_one();
 void output(int val);
 int run(struct Machine* machine);
-struct Machine* init_machine(int* op_list,
-    int(*input_fn)(), void(*output_fn)(int val));
 
 int step(struct Machine* machine);
 #endif
