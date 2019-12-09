@@ -6,7 +6,7 @@
 #include <machine.h>
 
 struct Machine {
-  int idx;
+  int ip;
   int* regs;
   int(*get_input)();
   void(*put_output)(int val);

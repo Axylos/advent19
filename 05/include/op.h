@@ -13,21 +13,25 @@ struct AddOp {
   int a;
   int b;
   int targ;
+  int modes;
 };
 
 struct MultOp {
   int a;
   int b;
   int targ;
+  int modes;
 };
 
 struct InputOp {
   int val;
   int targ;
+  int modes;
 };
 
 struct OutputOp {
   int val;
+  int modes;
 };
 
 union Instruction {
