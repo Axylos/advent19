@@ -21,12 +21,15 @@ build: run.o $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
 run: build
-	./build/run < input.txt
+	./build/run
 
 test: $(TEST_OBJ) $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/test $^ $(CFLAGS)
 	./build/test < test.txt
 
+check: build
+	valgrind --leak-check=yes build/run
+	
 .PHONY: clean
 
 clean:
