@@ -30,6 +30,7 @@ int eval_input(int(*reader)()) {
   struct Machine* machine = init_machine(list, size, reader, writer);
   printf("FIRST RUN:\n");
   run(machine);
+  free_machine(machine);
 
   return 0;
 }

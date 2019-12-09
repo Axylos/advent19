@@ -14,6 +14,7 @@ struct Machine {
 struct Machine* init_machine(int* op_list, int list_size,
     int(*input_fn)(), void(*output_fn)(int val));
 
+void free_machine(struct Machine* machine);
 int input_one();
 void output(int val);
 int run(struct Machine* machine);

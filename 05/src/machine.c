@@ -3,6 +3,41 @@
 #include <stdlib.h>
 #include <assert.h>
 
+void free_machine(struct Machine* machine) {
+  free(machine->regs);
+  free(machine);
+}
+void free_op(struct Op* op) {
+  switch (op->op_type) {
+    case ADD:
+      free(op->instruction->add_op);
+      break;
+    case MULT:
+      free(op->instruction->mult_op);
+      break;
+    case INPUT:
+      free(op->instruction->input_op);
+      break;
+    case OUTPUT:
+      free(op->instruction->output_op);
+      break;
+    case JUMP_IF_TRUE:
+      free(op->instruction->jump_if_true_op);
+      break;
+    case JUMP_IF_FALSE:
+      free(op->instruction->jump_if_false_op);
+      break;
+    case LESS_THAN:
+      free(op->instruction->less_than_op);
+      break;
+    case EQUALS:
+      free(op->instruction->equals_op);
+      break;
+  } 
+  free(op->instruction);
+  free(op);
+}
+
 struct Machine* init_machine(int* op_list, int list_size,
   int(*input_fn)(), void(*output_fn)(int val)) {
   struct Machine* machine = malloc(sizeof(struct Machine));
@@ -263,6 +298,7 @@ int run(struct Machine* machine) {
   while(op_code != HALT) {
     struct Op* op = parse_op(machine, op_code);
     eval(machine, op);
+    free_op(op);
     op_code = step(machine);
   }
 
