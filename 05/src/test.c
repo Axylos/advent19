@@ -10,7 +10,7 @@ void writer(int val) {
 }
 
 int reader() {
-  return 1000;
+  return 9;
 
 }
 
@@ -43,7 +43,10 @@ int main(int argc, char* argv[]) {
   //test_prog("test_progs/04.txt");
   
   // test if input is 0 and print 0 if so
-  test_prog("test_progs/07.txt");
+  //test_prog("test_progs/07.txt");
   //test_prog("test_progs/08.txt");
+
+  // test <=> 8
+  test_prog("test_progs/09.txt");
   return 0;
 }

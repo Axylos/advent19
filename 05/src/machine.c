@@ -261,7 +261,6 @@ void eval(struct Machine* machine, struct Op* op) {
 int run(struct Machine* machine) {
   int op_code = step(machine);
   while(op_code != HALT) {
-    print_regs(machine);
     struct Op* op = parse_op(machine, op_code);
     eval(machine, op);
     op_code = step(machine);
