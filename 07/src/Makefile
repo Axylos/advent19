@@ -6,16 +6,20 @@ ODIR=obj
 BUILD_DIR=./build
 RELEASE_DIR=../../dist
 
-_DEPS=io.h op.h machine.h digest.h
+_GLOBAL_OBJ=machine.o
+GLOBAL_OBJ=$(patsubst %,$(RELEASE_DIR)/%,$(_GLOBAL_OBJ))
+
+_DEPS=machine.h foo.h
 DEPS=$(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ=io.o machine.o
-OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
+_OBJ=io.o
+OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ)) $(GLOBAL_OBJ)
 
 _TEST_OBJ=test.o
 TEST_OBJ=$(patsubst %,$(ODIR)/%,$(_TEST_OBJ))
+
 $(ODIR)/%.o: %.c $(DEPS)
-	$(CC) -c -g3 -o $@ $< $(CFLAGS)
+	$(CC) -g3 -c -o $@ $< $(CFLAGS)
 
 all: clean run
 
@@ -23,7 +27,7 @@ build: run.o $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
 run: build
-	./build/run
+	./build/run < input.txt
 
 test: $(TEST_OBJ) $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/test $^ $(CFLAGS)
