@@ -8,7 +8,6 @@
 
 int main(int argc, char* argv[]) {
 
-  char* ROOT_CODE = "COM";
   struct ListNode* node_table[H_TABLE_SIZE];
   for (int i = 0; i < H_TABLE_SIZE; i++) {
     node_table[i] = NULL;
@@ -26,10 +25,8 @@ int main(int argc, char* argv[]) {
     assert(insert_node(node_table, node) != 0);
   }
 
-  compute_heights(node_table, ROOT_CODE);
+  int distance = find_transfer_dist("YOU", "SAN", node_table);
 
-  int sum = sum_heights(node_table);
-  printf("The sum of all node heights is: %d\n", sum);
-
+  printf("The distance between the objects YOU and SAN are orbiting : %d\n", distance);
   return 0;
 }

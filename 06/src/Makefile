@@ -7,8 +7,12 @@ BUILD_DIR=./build
 _DEPS=
 DEPS=$(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ=run.o
+_OBJ=run.o tree.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
+
+_OBJ2=run2.o tree.o
+OBJ2=$(patsubst %,$(ODIR)/%,$(_OBJ2))
+
 
 _TEST_OBJ=test.o
 TEST_OBJ=$(patsubst %,$(ODIR)/%,$(_TEST_OBJ))
@@ -20,8 +24,14 @@ all: clean run
 build: $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
+build2: $(OBJ2)
+	$(CC) -g3 -o $(BUILD_DIR)/run2 $^ $(CFLAGS)
+
 run: build
 	./build/run < input.txt
+
+run2: build2
+	./build/run2 < input.txt
 
 test: $(TEST_OBJ) $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/test $^ $(CFLAGS)
