@@ -5,19 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void writer(int val) {
-  printf("got some output: %d\n", val);
-}
 
-int reader() {
-  return 1;
-}
-
-int reader_extended() {
-  return 5;
-}
-
-int eval_input(int(*reader)()) {
+int eval_input() {
   FILE* fp = fopen("input.txt", "r");
   if (!fp) {
     perror("file open failed");
@@ -27,7 +16,7 @@ int eval_input(int(*reader)()) {
   int* list = ingest(&size, fp);
   fclose(fp);
 
-  struct Machine* machine = init_machine(list, size, reader, writer);
+  struct Machine* machine = init_machine(list, size, NULL);
   printf("FIRST RUN:\n");
   run(machine);
   free_machine(machine);
@@ -38,9 +27,9 @@ int eval_input(int(*reader)()) {
 int main(int argc, char* argv[]) {
 
   printf("RUNNING FIRST PART\n");
-  eval_input(reader);
+  eval_input();
 
   printf("PART DEUX RUN:\n");
-  eval_input(reader_extended);
+  eval_input();
   return 0;
 }

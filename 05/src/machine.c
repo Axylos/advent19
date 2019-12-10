@@ -39,12 +39,11 @@ void free_op(struct Op* op) {
 }
 
 struct Machine* init_machine(int* op_list, int list_size,
-  int(*input_fn)(), void(*output_fn)(int val)) {
+  void* data_ptr) {
   struct Machine* machine = malloc(sizeof(struct Machine));
   machine->ip = 0;
   machine->regs = op_list;
-  machine->get_input = input_fn;
-  machine->put_output = output_fn;
+  machine->data_ptr = data_ptr;
   machine->reg_size = list_size;
 
   return machine;
@@ -75,7 +74,7 @@ void exec_input(struct Machine* machine, struct InputOp* op) {
 void exec_output(struct Machine* machine, struct OutputOp* op) {
   int mode = op->modes % 10;
   int val = mode == 1 ? op->val : machine->regs[op->val];
-  machine->put_output(val);
+  machine_writer(machine->data_ptr, val);
 }
 
 void exec_add(struct Machine* machine, struct AddOp* op) {
@@ -182,7 +181,7 @@ struct Op* parse_op(struct Machine* machine, int op_code) {
     case INPUT: ;
       struct InputOp* input_op = malloc(sizeof(struct InputOp));
       input_op->targ = step(machine);
-      input_op->val = machine->get_input();
+      input_op->val = machine_reader(machine->data_ptr);
 
       input_op->modes = modes;
 
