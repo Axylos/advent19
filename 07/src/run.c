@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <machine.h>
@@ -30,16 +31,11 @@ int main(int argc, char* argv[]) {
   puts("called");
   int size = 0;
   int* list = ingest(&size);
+  int max = -1;
+  int phases[] = { 1, 2, 3, 4, 0 };
+  int max_signal = find_max_signal(phases, 0, 4, list, size, &max);
+  assert(max_signal == 272368);
 
-  int arg = 10;
-  struct Machine* m = init_machine(list, size, (void*)&arg);
-  run(m);
-  printf("%d\n", size);
-
-  int nums[N_PHASES] = { 1, 2, 3, 4, 5 };
-  int i;
-  struct Machine* machine = init_machine(list, size, &i);
-  machine->reg_size = size;
-  find_maximal_signal(nums, 0, 4, list, size, machine);
+  printf("the max signal is: %d\n", max_signal);
   return 0;
 }

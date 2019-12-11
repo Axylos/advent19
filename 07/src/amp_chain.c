@@ -49,7 +49,6 @@ int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, in
     memcpy(machine->regs, list, size * sizeof(int));
     
     int signal = compute_output(phases, list, size, machine);
-    printf("the curr sig: %d %d\n", signal, *max);
     if (signal > *max) {
       *max = signal;
     }

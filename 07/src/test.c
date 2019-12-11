@@ -33,8 +33,7 @@ void test_case() {
 }
 
 void test_find_max() {
-  int phases[] = { 4,3,2,1,0 };
-  //int phase_size = sizeof(phases) / sizeof(int);
+  int phases[] = { 1, 2, 3, 4, 0 };
 
   int prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
 
