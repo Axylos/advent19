@@ -17,7 +17,6 @@ int eval_input() {
   fclose(fp);
 
   struct Machine* machine = init_machine(list, size, NULL);
-  printf("FIRST RUN:\n");
   run(machine);
   free_machine(machine);
 

@@ -7,6 +7,7 @@ void free_machine(struct Machine* machine) {
   free(machine->regs);
   free(machine);
 }
+
 void free_op(struct Op* op) {
   switch (op->op_type) {
     case ADD:
@@ -45,6 +46,7 @@ struct Machine* init_machine(int* op_list, int list_size,
   machine->regs = op_list;
   machine->data_ptr = data_ptr;
   machine->reg_size = list_size;
+  machine->state = GO_SIG;
 
   return machine;
 }
@@ -59,7 +61,7 @@ void print_regs(struct Machine* m) {
 }
 
 int step(struct Machine* machine) {
-  return machine->regs[machine->ip++];
+  return machine->ip >= machine->reg_size ? NOOP : machine->regs[machine->ip++];
 }
 
 void exec_input(struct Machine* machine, struct InputOp* op) {
@@ -71,11 +73,10 @@ void exec_input(struct Machine* machine, struct InputOp* op) {
   machine->regs[addr] = val;
 }
 
-void exec_output(struct Machine* machine, struct OutputOp* op) {
+int exec_output(struct Machine* machine, struct OutputOp* op) {
   int mode = op->modes % 10;
   int val = mode == 1 ? op->val : machine->regs[op->val];
-  printf("mach val: %d\n", val);
-  machine_writer(machine->data_ptr, val);
+  return machine_writer(machine->data_ptr, val);
 }
 
 void exec_add(struct Machine* machine, struct AddOp* op) {
@@ -165,7 +166,7 @@ void exec_mult(struct Machine* machine, struct MultOp* op) {
 struct Op* parse_op(struct Machine* machine, int op_code) {
   union Instruction* instruction = malloc(sizeof(union Instruction));
   struct Op* op = malloc(sizeof(struct Op));
-  int code = op_code % 10;
+  int code = op_code % 100;
   int modes = op_code / 100;
   switch(code) {
     case ADD: ;
@@ -257,14 +258,17 @@ struct Op* parse_op(struct Machine* machine, int op_code) {
       instruction->equals_op = eq_op;
       op->op_type = EQUALS;
       break;
-
+    case HALT:
+      op->op_type = HALT;
+      machine->state = HALT_SIG;
+      break;
   }
 
   op->instruction = instruction;
   return op;
 }
 
-void eval(struct Machine* machine, struct Op* op) {
+int eval(struct Machine* machine, struct Op* op) {
   switch(op->op_type) {
     case INPUT:
       exec_input(machine, op->instruction->input_op);
@@ -290,16 +294,27 @@ void eval(struct Machine* machine, struct Op* op) {
     case EQUALS:
       exec_equals(machine, op->instruction->equals_op);
       break;
+    case HALT:
+      machine->state = HALT_SIG;
+      break;
+    case NOOP:
+      puts("got a noop");
+    default:
+      puts("you broke it");
+      printf("machine state: %d\nop type:  %d\n", machine->state, op->op_type);
+      assert(0);
   }
+
+  return 0;
 }
 
 int run(struct Machine* machine) {
-  int op_code = step(machine);
-  while(op_code != HALT) {
+  int op_code;
+  while(machine->state != HALT_SIG) {
+    op_code = step(machine);
     struct Op* op = parse_op(machine, op_code);
     eval(machine, op);
     free_op(op);
-    op_code = step(machine);
   }
 
   assert(op_code == HALT);

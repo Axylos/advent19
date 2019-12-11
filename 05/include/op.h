@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+#define NOOP -1
 #define ADD 1
 #define MULT 2
 #define INPUT 3

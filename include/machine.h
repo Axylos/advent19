@@ -5,13 +5,21 @@
 
 #define OP_LIST_SIZE 50
 
+enum op_sig {
+  GO_SIG,
+  HALT_SIG,
+  PAUSE_SIG
+};
+
 struct Machine {
   int ip;
   int* regs;
   void* data_ptr;
   int reg_size;
+  enum op_sig state;
 };
-void print_regs(struct Machine* m);
+
+void print_regs(struct Machine* machine);
 struct Machine* init_machine(int* op_list, int list_size,
     void* data_ptr);
 
