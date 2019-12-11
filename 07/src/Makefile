@@ -9,10 +9,10 @@ RELEASE_DIR=../../dist
 _GLOBAL_OBJ=machine.o
 GLOBAL_OBJ=$(patsubst %,$(RELEASE_DIR)/%,$(_GLOBAL_OBJ))
 
-_DEPS=machine.h foo.h
+_DEPS=machine.h foo.h amp_chain.h
 DEPS=$(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ=io.o
+_OBJ=io.o amp_chain.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ)) $(GLOBAL_OBJ)
 
 _TEST_OBJ=test.o
@@ -29,9 +29,11 @@ build: run.o $(OBJ)
 run: build
 	./build/run < input.txt
 
-test: $(TEST_OBJ) $(OBJ)
+test_build: test.o  $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/test $^ $(CFLAGS)
-	./build/test < test.txt
+
+test: test_build
+	./build/test
 
 check: build
 	valgrind --leak-check=yes build/run

@@ -74,6 +74,7 @@ void exec_input(struct Machine* machine, struct InputOp* op) {
 void exec_output(struct Machine* machine, struct OutputOp* op) {
   int mode = op->modes % 10;
   int val = mode == 1 ? op->val : machine->regs[op->val];
+  printf("mach val: %d\n", val);
   machine_writer(machine->data_ptr, val);
 }
 

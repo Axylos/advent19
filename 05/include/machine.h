@@ -11,7 +11,7 @@ struct Machine {
   void* data_ptr;
   int reg_size;
 };
-
+void print_regs(struct Machine* m);
 struct Machine* init_machine(int* op_list, int list_size,
     void* data_ptr);
 
