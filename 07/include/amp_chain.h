@@ -12,6 +12,6 @@ struct Store {
 };
 
 int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Machine* machine);
-int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size);
+int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, int* max);
 
 #endif

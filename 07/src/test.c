@@ -32,7 +32,20 @@ void test_case() {
   assert(sig == 43210);
 }
 
+void test_find_max() {
+  int phases[] = { 4,3,2,1,0 };
+  //int phase_size = sizeof(phases) / sizeof(int);
+
+  int prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
+
+  int prog_size = sizeof(prog) / sizeof(int);
+
+  int max = -1;
+  int i = find_max_signal(phases, 0, 4, prog, prog_size, &max); 
+  assert(i == 43210);
+}
 int main(int argc, char* argv[]) {
   test_case();
+  test_find_max();
   return 0;
 }

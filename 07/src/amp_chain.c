@@ -37,32 +37,29 @@ int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Ma
   return store->current_val;
 }
 
-int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size) {
-  struct Machine* machine = init_machine(list, size, NULL);
-  int max = -1;
+int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, int* max) {
+  struct Store* store = malloc(sizeof(struct Store));
+  store->phases = phases;
+  store->current_val = 0;
+  store->amp_n = 0;
+  store->send_input = true;
+
+  struct Machine* machine = init_machine(list, size, store);
   if (l == r) {
     memcpy(machine->regs, list, size * sizeof(int));
     
-    struct Store* store = (struct Store*)malloc(sizeof(struct Store));
-    store->phases = phases;
-    store->current_val = 0;
-    store->amp_n = 0;
-    store->send_input = true;
-    printf("%d %d %d %d %d \n", phases[0], phases[1], phases[2], phases[3], phases[4]);
-    machine->ip = 0;
-    machine->data_ptr = (void*)&store;
     int signal = compute_output(phases, list, size, machine);
-    if (signal> max) {
-      max = signal;
+    printf("the curr sig: %d %d\n", signal, *max);
+    if (signal > *max) {
+      *max = signal;
     }
   } else {
     for (int i = l; i <= r; i++) {
       swap((phases + l), (phases + i));
-      find_max_signal(phases, l + 1, r, list, size);
+      find_max_signal(phases, l + 1, r, list, size, max);
       swap((phases+ l), (phases + i));
     }
   }
-
-  return max;
+  return *max;
 }
 
