@@ -23,7 +23,7 @@ void tune_machine(struct Store* store, int phases[N_PHASES]) {
 void reset_machine(struct Machine* machine, int program[], int prog_size) {
   memcpy(machine->regs, program, prog_size * sizeof(int));
   machine->ip = 0;
-  machine->state = GO;
+  machine->state = GO_SIG;
   struct Store* store = (struct Store*)machine->data_ptr;
   store->send_input = false;
 }

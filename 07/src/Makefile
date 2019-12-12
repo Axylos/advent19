@@ -9,10 +9,10 @@ RELEASE_DIR=../../dist
 _GLOBAL_OBJ=machine.o
 GLOBAL_OBJ=$(patsubst %,$(RELEASE_DIR)/%,$(_GLOBAL_OBJ))
 
-_DEPS=machine.h foo.h amp_chain.h
+_DEPS=machine.h foo.h amp_chain.h amp_loop.h
 DEPS=$(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ=io.o amp_chain.o
+_OBJ=
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ)) $(GLOBAL_OBJ)
 
 _TEST_OBJ=test.o
@@ -23,13 +23,13 @@ $(ODIR)/%.o: %.c $(DEPS)
 
 all: clean run
 
-build: run.o $(OBJ)
+build: $(ODIR)/run.o $(OBJ) $(ODIR)/amp_chain.o
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
 run: build
 	./build/run < input.txt
 
-test_build: test.o  $(OBJ)
+test_build: $(ODIR)/test.o  $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/test $^ $(CFLAGS)
 
 test: test_build
@@ -39,6 +39,12 @@ check: build
 	valgrind --leak-check=yes build/run
 	
 .PHONY: clean
+
+build2: $(ODIR)/two.o $(OBJ) $(ODIR)/amp_loop.o
+	$(CC) -g3 -o $(BUILD_DIR)/two $^ $(CFLAGS)
+
+two: build2
+	./build/two < two_prog.txt
 
 clean:
 	rm -rf $(ODIR)/*.o

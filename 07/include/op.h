@@ -3,7 +3,6 @@
 
 #include <stdio.h>
 
-
 #define NOOP -1
 #define ADD 1
 #define MULT 2
@@ -30,6 +29,7 @@ struct MultOp {
 };
 
 struct InputOp {
+  int val;
   int targ;
   int modes;
 };

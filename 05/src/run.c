@@ -18,7 +18,7 @@ int eval_input() {
 
   struct Machine* machine = init_machine(list, size, NULL);
   run(machine);
-  free_machine(machine);
+  free(machine);
 
   return 0;
 }

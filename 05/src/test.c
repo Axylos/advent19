@@ -24,7 +24,8 @@ int test_prog(char file_name[]) {
   int* list = ingest(&size, fp);
   fclose(fp);
 
-  struct Machine* machine = init_machine(list, size, reader, writer);
+  int i = 9;
+  struct Machine* machine = init_machine(list, size, &i);
   run(machine);
 
   return 0;
