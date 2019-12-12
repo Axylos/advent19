@@ -21,6 +21,7 @@ int machine_reader(void* data_ptr, enum OpSig* sig) {
 int machine_writer(void* data_ptr, int val) {
   struct Executioner* ex = (struct Executioner*)data_ptr;
   ex->current_val = val;
+  printf("output: %d\n", val);
   return PAUSE_SIG;
 }
 
@@ -56,10 +57,11 @@ struct Executioner* init_executioner(int prog[], int prog_size) {
 }
 
 struct Machine* get_active_machine(struct Executioner* ex) {
-  struct Machine* m = ex->machines[ex->active_machine];
   if (ex->active_machine >= N_PHASES) {
+    puts("true");
     ex->active_machine = 0;
   }
+  struct Machine* m = ex->machines[ex->active_machine];
 
   m->state = GO_SIG;
   return m;
