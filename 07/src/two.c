@@ -41,5 +41,6 @@ int main(int argc, char* argv[]) {
   int max = -1;
   int max_signal = find_max_thrust(phases, 0 , 4, list, size, &max);
   printf("the answer to part II is: %d\n", max_signal);
+  assert(max_signal == 19741286);
   return 0;
 }

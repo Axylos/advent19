@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 int main(int argc, char* argv[]) {
   char ch;
@@ -34,5 +35,7 @@ int main(int argc, char* argv[]) {
     }
   }
   printf("the min product is: %d\n", product);
+
+  assert(product == 2413);
   return 0;
 }
