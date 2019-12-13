@@ -50,7 +50,7 @@ struct Executioner* init_executioner(int prog[], int prog_size) {
   for (int i = 0; i < N_PHASES; i++) {
     int* regs = calloc(prog_size, sizeof(int));
     memcpy(regs, prog, prog_size * sizeof(int));
-    struct Machine* m = init_machine(prog, prog_size, ex);
+    struct Machine* m = init_machine(regs, prog_size, ex);
     ex->machines[i] = m;
   }
   return ex;
@@ -75,8 +75,9 @@ int compute_val(struct Executioner* ex, int phases[N_PHASES]) {
   memcpy(ex->phases, phases, sizeof(ex->phases));
   enum OpSig sig = GO_SIG;
   while (sig == GO_SIG) {
-    printf("%d\n", ex->active_machine);
     sig = run(get_active_machine(ex));
+    print_regs(get_active_machine(ex));
+    printf("active machine: %d\n", ex->active_machine);
     inc_machine(ex);
   }
 

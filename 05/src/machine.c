@@ -265,12 +265,12 @@ int eval(struct Machine* machine, struct Op op) {
       break;
     case HALT:
       machine->state = HALT_SIG;
+      sig = HALT_SIG;
       break;
     case NOOP:
       puts("got a noop");
     default:
       puts("you broke it");
-      printf("machine state: %d\nop type:  %d\n", machine->state, op.op_type);
       assert(0);
   }
 
@@ -280,12 +280,12 @@ int eval(struct Machine* machine, struct Op op) {
 int run(struct Machine* machine) {
   while(machine->state == GO_SIG) {
     int op_code = step(machine);
-    printf("%d\n", op_code);
+    printf("op code: %d\n", op_code);
     struct Op op = parse_op(machine, op_code);
     machine->state = eval(machine, op);
   }
+  printf("final sig: %d\n", machine->state);
 
   printf("WE'RE GONNA SHUT 'ER DOWN\n");
-
-  return 0;
+  return machine->state == HALT_SIG ? HALT_SIG : GO_SIG;
 }

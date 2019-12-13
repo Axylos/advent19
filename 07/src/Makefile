@@ -18,12 +18,17 @@ OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ)) $(GLOBAL_OBJ)
 _TEST_OBJ=test.o
 TEST_OBJ=$(patsubst %,$(ODIR)/%,$(_TEST_OBJ))
 
+MACHINE_SRC=../../07/src/machine.c
+
+all: clean run
+machine.o: 
+	$(CC) -g3 -c -o $(ODIR)/machine.o ../../05/src/machine.c -I../../07/include/
+
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -g3 -c -o $@ $< $(CFLAGS)
 
-all: clean run
 
-build: $(ODIR)/run.o $(OBJ) $(ODIR)/amp_chain.o
+build: $(ODIR)/run.o $(OBJ) $(ODIR)/amp_chain.o io.o
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
 run: build

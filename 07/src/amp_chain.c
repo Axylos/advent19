@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #define N_PHASES 5
+#define SIZE 10
 
 void swap(int* a, int* b) {
   int tmp;
@@ -27,6 +28,7 @@ void reset_machine(struct Machine* machine, int program[], int prog_size) {
   struct Store* store = (struct Store*)machine->data_ptr;
   store->send_input = false;
 }
+
 
 int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Machine* machine) {
   struct Store* store = (struct Store*)machine->data_ptr;

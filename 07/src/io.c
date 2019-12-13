@@ -4,7 +4,7 @@
 
 #define SIZE 10
 
-int machine_reader(void* data_ptr) {
+int machine_reader(void* data_ptr, enum OpSig* sig) {
   struct Store* store = (struct Store*)data_ptr;
 
   int ret = store->send_input ? store->current_val : store->phases[store->amp_n++];
