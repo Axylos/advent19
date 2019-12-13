@@ -28,9 +28,11 @@ int main(int argc, char* argv[]) {
   printf("RUNNING FIRST PART\n");
   input = 1;
   eval_input();
+  assert(output == 13787043);
 
   printf("PART DEUX RUN:\n");
   input = 5;
   eval_input();
+  assert(output == 3892695);
   return 0;
 }

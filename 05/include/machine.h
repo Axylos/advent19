@@ -26,7 +26,6 @@ struct Machine* init_machine(int* op_list, int list_size,
 
 
 //void free_machine(struct Machine* machine);
-void output(int val);
 int run(struct Machine* machine);
 
 int step(struct Machine* machine);

@@ -4,9 +4,11 @@
 #include <machine.h>
 
 int input;
+int output;
 
 int machine_writer(void* data_ptr, int val) {
   printf("got some output: %d\n", val);
+  output = val;
   return GO_SIG;
 }
 
