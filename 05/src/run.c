@@ -4,7 +4,7 @@
 #include <digest.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <io.h>
 
 int eval_input() {
   FILE* fp = fopen("input.txt", "r");
@@ -26,9 +26,11 @@ int eval_input() {
 int main(int argc, char* argv[]) {
 
   printf("RUNNING FIRST PART\n");
+  input = 1;
   eval_input();
 
   printf("PART DEUX RUN:\n");
+  input = 5;
   eval_input();
   return 0;
 }
