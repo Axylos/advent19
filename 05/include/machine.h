@@ -14,7 +14,7 @@ int machine_reader(void* data_ptr, enum OpSig* sig);
 int machine_writer(void* data_ptr, int val);
 struct Machine {
   int ip;
-  int* regs;
+  long* regs;
   void* data_ptr;
   int reg_size;
   enum OpSig state;

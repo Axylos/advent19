@@ -5,7 +5,7 @@
 
 
 
-struct Machine* init_machine(int* op_list, int list_size,
+struct Machine* init_machine(long* op_list, int list_size,
   void* data_ptr) {
   struct Machine* machine = malloc(sizeof(struct Machine));
   machine->ip = 0;
