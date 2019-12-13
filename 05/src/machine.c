@@ -280,12 +280,10 @@ int eval(struct Machine* machine, struct Op op) {
 int run(struct Machine* machine) {
   while(machine->state == GO_SIG) {
     int op_code = step(machine);
-    printf("op code: %d\n", op_code);
     struct Op op = parse_op(machine, op_code);
     machine->state = eval(machine, op);
   }
-  printf("final sig: %d\n", machine->state);
 
-  printf("WE'RE GONNA SHUT 'ER DOWN\n");
+  //printf("WE'RE GONNA SHUT 'ER DOWN\n");
   return machine->state == HALT_SIG ? HALT_SIG : GO_SIG;
 }

@@ -34,5 +34,12 @@ void test_two() {
 int main(int argc, char* argv[]) {
   test_one();
   test_two();
+
+  int phases[] = { 5, 6, 7, 8, 9 };
+  int size = 0;
+  int* list = ingest(&size);
+  int max = -1;
+  int max_signal = find_max_thrust(phases, 0 , 4, list, size, &max);
+  printf("the answer to part II is: %d\n", max_signal);
   return 0;
 }

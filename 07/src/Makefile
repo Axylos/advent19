@@ -49,7 +49,7 @@ build2: $(ODIR)/two.o $(OBJ) $(ODIR)/amp_loop.o
 	$(CC) -g3 -o $(BUILD_DIR)/two $^ $(CFLAGS)
 
 two: build2
-	./build/two < two_prog.txt
+	./build/two < input.txt
 
 clean:
 	rm -rf $(ODIR)/*.o

@@ -10,7 +10,7 @@ struct Executioner {
   int phases[N_PHASES];
 };
 int* ingest(int* size);
-
+int find_max_thrust(int phases[N_PHASES], int l, int r, int list[], int size, int* max);
 struct Executioner* init_executioner(int prog[], int prog_size);
 int compute_val(struct Executioner* ex, int phases[N_PHASES]);
 

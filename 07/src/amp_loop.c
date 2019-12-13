@@ -21,7 +21,6 @@ int machine_reader(void* data_ptr, enum OpSig* sig) {
 int machine_writer(void* data_ptr, int val) {
   struct Executioner* ex = (struct Executioner*)data_ptr;
   ex->current_val = val;
-  printf("output: %d\n", val);
   return PAUSE_SIG;
 }
 
@@ -58,7 +57,6 @@ struct Executioner* init_executioner(int prog[], int prog_size) {
 
 struct Machine* get_active_machine(struct Executioner* ex) {
   if (ex->active_machine >= N_PHASES) {
-    puts("true");
     ex->active_machine = 0;
   }
   struct Machine* m = ex->machines[ex->active_machine];
@@ -76,10 +74,36 @@ int compute_val(struct Executioner* ex, int phases[N_PHASES]) {
   enum OpSig sig = GO_SIG;
   while (sig == GO_SIG) {
     sig = run(get_active_machine(ex));
-    print_regs(get_active_machine(ex));
-    printf("active machine: %d\n", ex->active_machine);
     inc_machine(ex);
   }
 
   return ex->current_val;
 }
+
+void swap(int* a, int* b) {
+  int tmp;
+  tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+
+int find_max_thrust(int phases[N_PHASES], int l, int r, int prog[], int prog_size, int* max) {
+
+  if (l == r) {
+    struct Executioner* ex = init_executioner(prog, prog_size);
+    int signal = compute_val(ex, phases);
+
+    if (signal > *max) {
+      *max = signal;
+    }
+  } else {
+    for (int i = l; i <= r; i++) {
+      swap((phases + l), (phases + i));
+      find_max_thrust(phases, l + 1, r, prog, prog_size, max);
+      swap((phases+ l), (phases + i));
+    }
+  }
+  return *max;
+}
+
