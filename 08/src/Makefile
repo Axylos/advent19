@@ -24,13 +24,13 @@ all: clean run
 build: $(OBJ)
 	$(CC) -g3 -o $(BUILD_DIR)/run $^ $(CFLAGS)
 
-build2: $(OBJ2)
+build2: two.c
 	$(CC) -g3 -o $(BUILD_DIR)/run2 $^ $(CFLAGS)
 
 run: build
 	./build/run < input.txt
 
-run2: build2
+two: build2
 	./build/run2 < input.txt
 
 test: $(TEST_OBJ) $(OBJ)

@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define LAYER_LENGTH = 150;
-
 int main(int argc, char* argv[]) {
   char ch;
   int product = -1;
