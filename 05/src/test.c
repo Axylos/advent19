@@ -21,7 +21,7 @@ int test_prog(char file_name[]) {
     return EXIT_FAILURE;
   }
   int size;
-  int* list = ingest(&size, fp);
+  long* list = ingest(&size, fp);
   fclose(fp);
 
   int i = 9;

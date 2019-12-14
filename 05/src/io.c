@@ -6,10 +6,10 @@
 int input;
 int output;
 
-int machine_writer(void* data_ptr, int val) {
-  printf("got some output: %d\n", val);
+int machine_writer(void* data_ptr, long val) {
+  printf("got some output: %ld\n", val);
   output = val;
-  return GO_SIG;
+  return GO;
 }
 
 int machine_reader(void* data_ptr, enum OpSig* sig) {

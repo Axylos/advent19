@@ -4,80 +4,52 @@
 #include <stdio.h>
 
 
-#define NOOP -1
-#define ADD 1
-#define MULT 2
-#define INPUT 3
-#define OUTPUT 4
-#define JUMP_IF_TRUE 5
-#define JUMP_IF_FALSE 6
-#define LESS_THAN 7
-#define EQUALS 8
-#define HALT 99
-
-struct AddOp {
-  int a;
-  int b;
-  int targ;
-  int modes;
+enum OpSig  {
+  ADD=1,
+  MULT=2,
+  INPUT=3,
+  OUTPUT=4,
+  JUMP_IF_TRUE=5,
+  JUMP_IF_FALSE=6,
+  LESS_THAN=7,
+  EQUALS=8,
+  HALT=99,
+  GO=100,
+  PAUSE=101,
+  NOOP=-1,
 };
 
-struct MultOp {
-  int a;
-  int b;
-  int targ;
-  int modes;
+union BinaryOp {
+  long a;
+  long b;
+  long addr;
 };
 
-struct InputOp {
-  int targ;
-  int modes;
+struct UnoOp {
+  long val;
 };
 
-struct OutputOp {
-  int val;
-  int modes;
+struct BiOp {
+  long val;
+  long addr;
 };
 
-struct JumpIfTrueOp {
-  int test_val;
-  int addr;
-  int modes;
-};
-
-struct JumpIfFalseOp {
-  int test_val;
-  int addr;
-  int modes;
-};
-
-struct LessThanOp {
-  int a;
-  int b;
-  int addr;
-  int modes;
-};
-
-struct EqualsOp {
-  int a;
-  int b;
-  int addr;
-  int modes;
+struct TriOp {
+  long a;
+  long b;
+  long addr;
 };
 
 union Instruction {
-  struct AddOp add_op;
-  struct MultOp mult_op;
-  struct InputOp input_op;
-  struct OutputOp output_op;
-  struct JumpIfTrueOp jump_if_true_op;
-  struct JumpIfFalseOp jump_if_false_op;
-  struct LessThanOp less_than_op;
-  struct EqualsOp equals_op;
+  enum OpSig null_op;
+  struct UnoOp uno_op;
+  struct BiOp bi_op;
+  struct TriOp tri_op;
 };
 
 struct Op {
-  int op_type;
+  enum OpSig op_sig;
+  int modes;
   union Instruction instruction;
 };
 

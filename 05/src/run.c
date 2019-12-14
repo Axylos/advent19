@@ -13,7 +13,7 @@ int eval_input() {
     return EXIT_FAILURE;
   }
   int size;
-  int* list = ingest(&size, fp);
+  long* list = ingest(&size, fp);
   fclose(fp);
 
   struct Machine* machine = init_machine(list, size, NULL);

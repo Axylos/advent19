@@ -2,31 +2,30 @@
 #define MACHINE_H_SEEN
 
 #include <io.h>
+#include <op.h>
 
 #define OP_LIST_SIZE 50
-enum OpSig {
-  GO_SIG,
-  HALT_SIG,
-  PAUSE_SIG
-};
 
 int machine_reader(void* data_ptr, enum OpSig* sig);
-int machine_writer(void* data_ptr, int val);
+int machine_writer(void* data_ptr, long val);
+
 struct Machine {
   int ip;
   long* regs;
   void* data_ptr;
   int reg_size;
   enum OpSig state;
+  long rel_base;
 };
 
 void print_regs(struct Machine* machine);
-struct Machine* init_machine(int* op_list, int list_size,
+struct Machine* init_machine(long* op_list, int list_size,
     void* data_ptr);
+
 
 
 //void free_machine(struct Machine* machine);
 int run(struct Machine* machine);
 
-int step(struct Machine* machine);
+long step(struct Machine* machine);
 #endif
