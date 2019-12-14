@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include <amp_loop.h>
 
 void test_computation() {

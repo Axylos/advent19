@@ -10,11 +10,11 @@ void test_case() {
   int phases[] = { 4,3,2,1,0 };
   //int phase_size = sizeof(phases) / sizeof(int);
 
-  int prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
+  long prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
 
   int prog_size = sizeof(prog) / sizeof(int);
   printf("prog size: %d\n", prog_size);
-  int other_prog[prog_size];
+  long other_prog[prog_size];
   for (int i = 0; i < prog_size; i++) {
     other_prog[i] = prog[i];
   }
@@ -26,7 +26,7 @@ void test_case() {
   store->amp_n = 0;
   store->send_input = true;
 
-  struct Machine* machine = init_machine((int*)other_prog, prog_size, store);
+  struct Machine* machine = init_machine((long*)other_prog, prog_size, store);
   int sig = compute_output(phases, prog, prog_size, machine);
 
   assert(sig == 43210);
@@ -35,7 +35,7 @@ void test_case() {
 void test_find_max() {
   int phases[] = { 1, 2, 3, 4, 0 };
 
-  int prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
+  long prog[] = { 3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0 };
 
   int prog_size = sizeof(prog) / sizeof(int);
 

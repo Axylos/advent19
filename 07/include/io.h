@@ -1,0 +1,1 @@
+long* ingest(int* size);

@@ -10,8 +10,7 @@ struct Store {
   int amp_n;
   bool send_input;
 };
-int* ingest(int* size);
-int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Machine* machine);
-int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, int* max);
+long compute_output(int phases[N_PHASES], long program[], int prog_size, struct Machine* machine);
+long find_max_signal(int phases[N_PHASES], int l, int r, long list[], int size, int* max);
 
 #endif

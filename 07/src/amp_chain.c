@@ -21,16 +21,16 @@ void tune_machine(struct Store* store, int phases[N_PHASES]) {
   store->current_val = 0;
 }
 
-void reset_machine(struct Machine* machine, int program[], int prog_size) {
-  memcpy(machine->regs, program, prog_size * sizeof(int));
+void reset_machine(struct Machine* machine, long program[], int prog_size) {
+  memcpy(machine->regs, program, prog_size * sizeof(long));
   machine->ip = 0;
-  machine->state = GO_SIG;
+  machine->state = GO;
   struct Store* store = (struct Store*)machine->data_ptr;
   store->send_input = false;
 }
 
 
-int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Machine* machine) {
+long compute_output(int phases[N_PHASES], long program[], int prog_size, struct Machine* machine) {
   struct Store* store = (struct Store*)machine->data_ptr;
   tune_machine(store, phases);
   for (int i = 0; i < N_PHASES; i++) {
@@ -40,7 +40,7 @@ int compute_output(int phases[N_PHASES], int program[], int prog_size, struct Ma
   return store->current_val;
 }
 
-int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, int* max) {
+long find_max_signal(int phases[N_PHASES], int l, int r, long list[], int size, int* max) {
   struct Store* store = malloc(sizeof(struct Store));
   store->phases = phases;
   store->current_val = 0;
@@ -49,9 +49,9 @@ int find_max_signal(int phases[N_PHASES], int l, int r, int list[], int size, in
 
   struct Machine* machine = init_machine(list, size, store);
   if (l == r) {
-    memcpy(machine->regs, list, size * sizeof(int));
+    memcpy(machine->regs, list, size * sizeof(long));
     
-    int signal = compute_output(phases, list, size, machine);
+    long signal = compute_output(phases, list, size, machine);
     if (signal > *max) {
       *max = signal;
     }
