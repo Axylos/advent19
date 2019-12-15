@@ -56,7 +56,7 @@ long get_idx(struct Machine* m, long val, int mode) {
 }
 
 long get_val(struct Machine* m, long val, int mode) {
-  if (mode != 1) {
+  if (mode == 0 || mode == 2) {
     long addr = get_idx(m, val, mode);
     val = m->regs[addr];
   }
@@ -149,6 +149,23 @@ void exec_equals(struct Machine* machine, struct TriOp op, int modes) {
 
 }
 
+void exec_set_base(struct Machine* m, struct UnoOp op, int modes) {
+  int mode = modes % 10;
+  long base = m->rel_base;
+
+  if (mode == 0) {
+    base += m->regs[op.val];
+  } else if (mode == 1) {
+    base += op.val;
+  } else if (mode == 2) {
+    base += m->regs[op.val + m->rel_base];
+  } else {
+    puts("wrongw base arg");
+    assert(0);
+  }
+
+  m->rel_base = base;
+}
 
 void exec_mult(struct Machine* machine, struct TriOp op, int modes) {
   int mode_a = modes % 10;
@@ -264,6 +281,11 @@ struct Op parse_op(struct Machine* m, int op_code) {
       struct TriOp eq = build_tri_op(m);
       instruction.tri_op = eq;
       break;
+    case SET_BASE:
+      ;;
+      struct UnoOp base = build_uno_op(m);
+      instruction.uno_op = base;
+      break;
     case HALT:
       instruction.null_op = HALT;
       break;
@@ -300,6 +322,9 @@ int eval(struct Machine* machine, struct Op op) {
       break;
     case EQUALS:
       exec_equals(machine, op.instruction.tri_op, op.modes);
+      break;
+    case SET_BASE:
+      exec_set_base(machine, op.instruction.uno_op, op.modes);
       break;
     case HALT:
       machine->state = HALT;
