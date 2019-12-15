@@ -1,5 +1,5 @@
 IDIR=../include
-CC=gcc
+CC=clang
 CFLAGS=-I$(IDIR) -std=c11 -Werror -Wall
 GLOBAL_IDIR=../../include
 ODIR=obj

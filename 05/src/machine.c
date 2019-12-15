@@ -5,12 +5,15 @@
 
 void resize_machine(struct Machine* m, int addr) {
   assert(addr >= m->reg_size);
-  int new_size = addr + 100;
+  int new_size = addr + 1;
   m->regs = realloc(m->regs, new_size * sizeof(long));
   m->reg_size = new_size;
 }
 
-
+void set_reg(struct Machine* m, long val, int addr) {
+  assert(addr < m->reg_size);
+  m->regs[addr] = val;
+}
 
 struct Machine* init_machine(long* op_list, int list_size,
   void* data_ptr) {
@@ -20,6 +23,7 @@ struct Machine* init_machine(long* op_list, int list_size,
   machine->data_ptr = data_ptr;
   machine->reg_size = list_size;
   machine->state = GO;
+  machine->rel_base = 0;
 
   return machine;
 }
@@ -69,7 +73,7 @@ int exec_input(struct Machine* machine, struct UnoOp op, int mode) {
   long val = machine_reader(machine->data_ptr, &sig);
   long addr = get_idx(machine, op.val, mode);
   assert(addr >= 0);
-  machine->regs[addr] = val;
+  set_reg(machine, val, addr);
 
   return sig;
 }
@@ -89,7 +93,7 @@ void exec_add(struct Machine* machine, struct TriOp op, int modes) {
   long addr = get_idx(machine, op.addr, mode_c);
 
   assert(addr >= 0);
-  machine->regs[addr] = a + b;
+  set_reg(machine, a + b, addr);
 }
 
 void exec_jump_true(struct Machine* machine, struct BiOp op, int modes) {
@@ -126,9 +130,9 @@ void exec_less_than(struct Machine* machine, struct TriOp op, int modes) {
 
   assert(addr >= 0);
   if (a < b) {
-    machine->regs[addr] = 1;
+    set_reg(machine, 1, addr);
   } else {
-    machine->regs[addr] = 0;
+    set_reg(machine, 0, addr);
   }
 }
 void exec_equals(struct Machine* machine, struct TriOp op, int modes) {
@@ -142,9 +146,9 @@ void exec_equals(struct Machine* machine, struct TriOp op, int modes) {
 
   assert(addr >= 0);
   if (a == b) {
-    machine->regs[addr] = 1;
+    set_reg(machine, 1, addr);
   } else {
-    machine->regs[addr] = 0;
+    set_reg(machine, 0, addr);
   }
 
 }
@@ -153,12 +157,15 @@ void exec_set_base(struct Machine* m, struct UnoOp op, int modes) {
   int mode = modes % 10;
   long base = m->rel_base;
 
+  int addr;
   if (mode == 0) {
-    base += m->regs[op.val];
+    addr = get_idx(m, op.val, 0);
+    base += m->regs[addr];
   } else if (mode == 1) {
     base += op.val;
   } else if (mode == 2) {
-    base += m->regs[op.val + m->rel_base];
+    addr = get_idx(m, op.val + m->rel_base, 0);
+    base += m->regs[addr];
   } else {
     puts("wrongw base arg");
     assert(0);
@@ -177,6 +184,7 @@ void exec_mult(struct Machine* machine, struct TriOp op, int modes) {
   long addr = get_idx(machine, op.addr, mode_c);
 
   assert(addr >= 0);
+  set_reg(machine, a * b, addr);
   machine->regs[addr] = a * b;
 }
 
